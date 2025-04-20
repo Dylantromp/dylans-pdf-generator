@@ -2,7 +2,7 @@
   "name": "pdf-generator",
   "version": "1.0.0",
   "dependencies": {
-    "puppeteer-core": "^21.3.8",
+    "chrome-aws-lambda": "^10.2.0",
     "@sparticuz/chromium": "^112.0.0"
   }
 }
