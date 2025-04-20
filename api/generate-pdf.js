@@ -1,4 +1,4 @@
-import chromium from 'chrome-aws-lambda'; // Switch to chrome-aws-lambda
+import chromium from '@sparticuz/chromium'; // Use sparticuz chromium
 import puppeteer from 'puppeteer-core';
 
 export default async function handler(req, res) {
@@ -10,14 +10,14 @@ export default async function handler(req, res) {
   if (!url) return res.status(400).json({ error: 'URL is required' });
 
   try {
-    // Log the Chromium executable path
-    const execPath = await chromium.executablePath;
-    console.log("Chromium Executable Path:", execPath); // ✅ Logging the path
+    // Log the Chromium executable path for debugging
+    const execPath = await chromium.executablePath();
+    console.log("Chromium Executable Path:", execPath);
 
     const browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: execPath, // Use the logged path here
+      executablePath: execPath, // Path to the Chromium binary
       headless: chromium.headless,
     });
 
