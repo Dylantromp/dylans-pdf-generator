@@ -1,36 +1,33 @@
-const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
+import chromium from '@sparticuz/chromium';
+import puppeteer from 'puppeteer-core';
 
-module.exports = async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method Not Allowed" });
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Only POST allowed' });
   }
 
   const { url } = req.body;
-
-  if (!url) {
-    return res.status(400).json({ error: "Missing URL" });
-  }
+  if (!url) return res.status(400).json({ error: 'URL is required' });
 
   try {
     const browser = await puppeteer.launch({
       args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
       headless: chromium.headless,
     });
 
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(url, { waitUntil: 'networkidle2' });
 
-    const pdf = await page.pdf({ format: "A4" });
-
+    const pdfBuffer = await page.pdf({ format: 'A4' });
     await browser.close();
 
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "attachment; filename=webpage.pdf");
-    res.send(pdf);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=page.pdf');
+    res.status(200).send(pdfBuffer);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to generate PDF" });
+    console.error('PDF generation failed:', err);
+    res.status(500).json({ error: 'Failed to generate PDF' });
   }
-};
+}
