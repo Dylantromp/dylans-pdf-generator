@@ -1,0 +1,8 @@
+{
+  "name": "pdf-generator",
+  "version": "1.0.0",
+  "dependencies": {
+    "puppeteer-core": "^21.3.8",
+    "@sparticuz/chromium": "^112.0.0"
+  }
+}
