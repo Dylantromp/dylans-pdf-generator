@@ -1,4 +1,4 @@
-import chromium from '@sparticuz/chromium';
+import chromium from 'chrome-aws-lambda'; // Switch to chrome-aws-lambda
 import puppeteer from 'puppeteer-core';
 
 export default async function handler(req, res) {
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     // Log the Chromium executable path
-    const execPath = await chromium.executablePath();
+    const execPath = await chromium.executablePath;
     console.log("Chromium Executable Path:", execPath); // ✅ Logging the path
 
     const browser = await puppeteer.launch({
