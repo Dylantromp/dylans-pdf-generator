@@ -10,10 +10,14 @@ export default async function handler(req, res) {
   if (!url) return res.status(400).json({ error: 'URL is required' });
 
   try {
+    // Log the Chromium executable path
+    const execPath = await chromium.executablePath();
+    console.log("Chromium Executable Path:", execPath); // ✅ Logging the path
+
     const browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
+      executablePath: execPath, // Use the logged path here
       headless: chromium.headless,
     });
 
